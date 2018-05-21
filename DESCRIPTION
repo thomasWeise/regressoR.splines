@@ -26,3 +26,4 @@ Collate:
     'FittedSplineModel.R'
     'fitSpline.R'
     'smoothSpline.R'
+    'default.R'

@@ -11,21 +11,25 @@ test_that("Test smoothSpline noiseless", {
   metric <- regressoR.quality::RegressionQualityMetric.default(x, y);
 
   sfr <- regressoR.spline.smooth(metric, forceStart = TRUE, forceEnd=TRUE);
+  expect_is(sfr, "FittedSplineModel");
   expect_lt(metric@quality(sfr@f), 0.1);
   expect_lt(sfr@size, length(x));
   expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 0.1)
 
   sfr <- regressoR.spline.smooth(metric, forceStart = TRUE, forceEnd=FALSE);
+  expect_is(sfr, "FittedSplineModel");
   expect_lt(metric@quality(sfr@f), 0.1);
   expect_lt(sfr@size, length(x));
   expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 0.1)
 
   sfr <- regressoR.spline.smooth(metric, forceStart = FALSE, forceEnd=FALSE);
+  expect_is(sfr, "FittedSplineModel");
   expect_lt(metric@quality(sfr@f), 0.1);
   expect_lt(sfr@size, length(x));
   expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 0.1)
 
   sfr <- regressoR.spline.smooth(metric, forceStart = FALSE, forceEnd=TRUE);
+  expect_is(sfr, "FittedSplineModel");
   expect_lt(metric@quality(sfr@f), 0.1);
   expect_lt(sfr@size, length(x));
   expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 0.1)
@@ -40,21 +44,25 @@ test_that("Test smoothSpline noisy", {
   metric <- regressoR.quality::RegressionQualityMetric.default(x, y);
 
   sfr <- regressoR.spline.smooth(metric, forceStart = TRUE, forceEnd=TRUE);
+  expect_is(sfr, "FittedSplineModel");
   expect_lt(metric@quality(sfr@f), 0.6);
   expect_lt(sfr@size, length(x));
   expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 1)
 
   sfr <- regressoR.spline.smooth(metric, forceStart = TRUE, forceEnd=FALSE);
+  expect_is(sfr, "FittedSplineModel");
   expect_lt(metric@quality(sfr@f), 0.6);
   expect_lt(sfr@size, length(x));
   expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 1)
 
   sfr <- regressoR.spline.smooth(metric, forceStart = FALSE, forceEnd=FALSE);
+  expect_is(sfr, "FittedSplineModel");
   expect_lt(metric@quality(sfr@f), 0.6);
   expect_lt(sfr@size, length(x));
   expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 1)
 
   sfr <- regressoR.spline.smooth(metric, forceStart = FALSE, forceEnd=TRUE);
+  expect_is(sfr, "FittedSplineModel");
   expect_lt(metric@quality(sfr@f), 0.6);
   expect_lt(sfr@size, length(x));
   expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 1)

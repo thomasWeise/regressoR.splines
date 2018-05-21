@@ -2,6 +2,8 @@
 
 export(FittedSplineModel.as.character)
 export(FittedSplineModel.new)
+export(regressoR.spline.default)
+export(regressoR.spline.protected)
 export(regressoR.spline.smooth)
 exportClasses(FittedSplineModel)
 importClassesFrom(regressoR.base,FittedModel)
