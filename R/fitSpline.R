@@ -104,6 +104,7 @@
 
   # take the function
   f <- result$f;
+  nameAdd <- "";
 
   # get function for raw data
   if(f.x.i) {
@@ -114,6 +115,7 @@
       # x is identity, y is not
       f.n <- function(x) f.y(f(x));
       trafo.complex <- transformation.y@complexity;
+      nameAdd <- " with transformed y";
     }
   } else {
     # x is not identity
@@ -121,18 +123,25 @@
       # y is identity, x not
       f.n <- function(x) f(f.x(x));
       trafo.complex <- transformation.x@complexity;
+      nameAdd <- " with transformed x";
     } else {
       # neither is
       f.n <- function(x) f.y(f(f.x(x)));
       trafo.complex <- transformation.x@complexity +
                        transformation.y@complexity;
+      nameAdd <- " with transformed xy";
     }
   }
 
   # build the resulting spline function
+  namePrefix <- "";
+  limitAdd <- 0L;
+
   if(forceEnd) {
+    namePrefix <- "protected ";
     if(forceStart) {
       # hold both the end and the start
+      limitAdd <- 2L;
       f <- function(x) {
         y <- vector(mode="double", length=length(x));
         a <- x <= x.min;   # get positions of values which are too small
@@ -147,6 +156,7 @@
       }
     } else {
       # hold the end only
+      limitAdd <- 1L;
       f <- function(x) {
         y <- vector(mode="double", length=length(x));
         b <- x >= x.max;   # get positions of values too big
@@ -162,6 +172,8 @@
     # not hold start
     if(forceStart) {
       # hold both only the start
+      limitAdd <- 1L;
+      namePrefix <- "protected ";
       f <- function(x) {
         y <- vector(mode="double", length=length(x));
         a <- x <= x.min;   # get positions of values which are too small
@@ -184,8 +196,9 @@
     return(FittedSplineModel.new(f, quality,
          # size is spline size, plus 2 for the limit points, plus the
          # transformation
-           result$size + 2L + trafo.complex,
-           result$name));
+           result$size + limitAdd + trafo.complex,
+           paste(namePrefix, result$name, nameAdd,
+                 sep="", collapse="")));
   }
 
   # ok, the spline is somehow invalid

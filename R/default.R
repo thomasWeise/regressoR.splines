@@ -1,8 +1,13 @@
 # get the protected splines
 #' @include smoothSpline.R
+#' @include linear.R
 .protected <- c(
   function(metric, transformation.x, transformation.y, metric.transformed, q)
     regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = TRUE,
+                            forceEnd = TRUE),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.trend.linear(metric, transformation.x, transformation.y, metric.transformed,
                             forceStart = TRUE,
                             forceEnd = TRUE)
 );
@@ -21,12 +26,17 @@ regressoR.spline.protected <- function() .protected
 
 # the set of default spline fitters
 #' @include smoothSpline.R
+#' @include linear.R
 .default <- unlist(c(
   .protected,
   function(metric, transformation.x, transformation.y, metric.transformed, q)
     regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
                             forceStart = FALSE,
-                            forceEnd = FALSE)
+                            forceEnd = FALSE),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.trend.linear(metric, transformation.x, transformation.y, metric.transformed,
+                           forceStart = FALSE,
+                           forceEnd = FALSE)
 ), recursive = TRUE);
 .default <- force(.default);
 for(f in .default) { f <- force(f); }
