@@ -22,6 +22,7 @@
 #' @param forceStart should the function be extrapolated beyond the left-most
 #'   point on the \code{x}-axis (\code{FALSE}) or simply stick at the first
 #'   \code{y} value (\code{TRUE})?
+#' @param ... parameters to be passed to \code{\link[stats]{smooth.spline}}
 #' @return On success, an instance of \code{\link{FittedSplineModel}},
 #'   \code{NULL} on failure.
 #' @export regressoR.spline.smooth

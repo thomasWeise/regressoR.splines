@@ -26,6 +26,8 @@ point on the \code{x}-axis (\code{FALSE}) or simply stick at the last
 \item{forceStart}{should the function be extrapolated beyond the left-most
 point on the \code{x}-axis (\code{FALSE}) or simply stick at the first
 \code{y} value (\code{TRUE})?}
+
+\item{...}{parameters to be passed to \code{\link[stats]{smooth.spline}}}
 }
 \value{
 On success, an instance of \code{\link{FittedSplineModel}},
