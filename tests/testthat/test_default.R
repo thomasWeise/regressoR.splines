@@ -2,6 +2,7 @@ library("regressoR.splines")
 context("default")
 
 .tester <- function(sl) {
+  set.seed(124L);
 
   f <- function(x) 3 - 2*x + 0.3*x*x + 2*sin(7*x)
   x <- runif(1000, min=0, max=6);
