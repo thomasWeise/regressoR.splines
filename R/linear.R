@@ -33,12 +33,8 @@
 #' @param transformation.y the transformation along the \code{y}-axis, or
 #'   \code{NULL} if none was applied to the data
 #' @param metric.transformed the transformed metric for the first fitting step
-#' @param forceEnd should the function be extrapolated beyond the right-most
-#'   point on the \code{x}-axis (\code{FALSE}) or simply stick at the last
-#'   \code{y} value (\code{TRUE})?
-#' @param forceStart should the function be extrapolated beyond the left-most
-#'   point on the \code{x}-axis (\code{FALSE}) or simply stick at the first
-#'   \code{y} value (\code{TRUE})?
+#' @param protected should the function be limited to the range of values
+#'   actually ocurring in the data?
 #' @return On success, an instance of \code{\link{FittedSplineModel}},
 #'   \code{NULL} on failure.
 #' @export regressoR.trend.linear
@@ -46,8 +42,8 @@
 regressoR.trend.linear <- function(metric,
                                    transformation.x=NULL, transformation.y=NULL,
                                    metric.transformed=NULL,
-                                   forceEnd=TRUE, forceStart=TRUE) {
+                                   protected=TRUE) {
   .fitSpline(metric, .linear.fitter, transformation.x,
              transformation.y, metric.transformed,
-             forceEnd=forceEnd, forceStart=forceStart);
+             protected=protected);
 }

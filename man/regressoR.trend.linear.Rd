@@ -5,8 +5,7 @@
 \title{Fit a Linear Trend to a given Dataset}
 \usage{
 regressoR.trend.linear(metric, transformation.x = NULL,
-  transformation.y = NULL, metric.transformed = NULL, forceEnd = TRUE,
-  forceStart = TRUE)
+  transformation.y = NULL, metric.transformed = NULL, protected = TRUE)
 }
 \arguments{
 \item{metric}{an instance of \code{RegressionQualityMetric}}
@@ -19,13 +18,8 @@ regressoR.trend.linear(metric, transformation.x = NULL,
 
 \item{metric.transformed}{the transformed metric for the first fitting step}
 
-\item{forceEnd}{should the function be extrapolated beyond the right-most
-point on the \code{x}-axis (\code{FALSE}) or simply stick at the last
-\code{y} value (\code{TRUE})?}
-
-\item{forceStart}{should the function be extrapolated beyond the left-most
-point on the \code{x}-axis (\code{FALSE}) or simply stick at the first
-\code{y} value (\code{TRUE})?}
+\item{protected}{should the function be limited to the range of values
+actually ocurring in the data?}
 }
 \value{
 On success, an instance of \code{\link{FittedSplineModel}},
