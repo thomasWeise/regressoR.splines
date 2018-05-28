@@ -7,6 +7,23 @@
                             forceStart = TRUE,
                             forceEnd = TRUE),
   function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = TRUE,
+                            forceEnd = TRUE, df=length(metric@x)),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = TRUE,
+                            forceEnd = TRUE, df=length(metric@x), all.knots=TRUE),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = TRUE,
+                            forceEnd = TRUE, df=round(0.5*length(metric@x))),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = TRUE,
+                            forceEnd = TRUE, df=round(0.5*length(metric@x)),
+                            all.knots = TRUE),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
     regressoR.trend.linear(metric, transformation.x, transformation.y, metric.transformed,
                             forceStart = TRUE,
                             forceEnd = TRUE)
@@ -33,6 +50,23 @@ regressoR.spline.protected <- function() .protected
     regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
                             forceStart = FALSE,
                             forceEnd = FALSE),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = FALSE,
+                            forceEnd = FALSE, df=length(metric@x)),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = FALSE,
+                            forceEnd = FALSE, df=length(metric@x), all.knots=TRUE),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = FALSE,
+                            forceEnd = FALSE, df=round(0.5*length(metric@x))),
+  function(metric, transformation.x, transformation.y, metric.transformed, q)
+    regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
+                            forceStart = FALSE,
+                            forceEnd = FALSE, df=round(0.5*length(metric@x)),
+                            all.knots = TRUE),
   function(metric, transformation.x, transformation.y, metric.transformed, q)
     regressoR.trend.linear(metric, transformation.x, transformation.y, metric.transformed,
                            forceStart = FALSE,

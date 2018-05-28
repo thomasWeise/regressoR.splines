@@ -19,7 +19,8 @@
                        splineFitter,
                        transformation.x=NULL, transformation.y=NULL,
                        metric.transformed=NULL,
-                       forceEnd=TRUE, forceStart=TRUE) {
+                       forceEnd=TRUE, forceStart=TRUE,
+                       ...) {
 
   if(is.null(splineFitter) || (!(is.function(splineFitter)))) {
     stop("splineFitter must be a proper function.");
@@ -72,7 +73,7 @@
         yy <- metric@y;
         or <- order(xx);
       }
-      ignoreErrors(result <- (splineFitter(x=xx[or], y=yy[or])));
+      ignoreErrors(result <- (splineFitter(x=xx[or], y=yy[or], ...)));
       if(is.null(result)) {
         return(NULL);
       }
@@ -94,7 +95,7 @@
     or <- order(xx);
 
     # The first fitting step takes place on the transformed data.
-    ignoreErrors(result <- (splineFitter(x=xx[or], y=yy[or])));
+    ignoreErrors(result <- (splineFitter(x=xx[or], y=yy[or], ...)));
     if(is.null(result)) {
       return(NULL);
     }

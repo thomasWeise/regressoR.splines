@@ -6,7 +6,7 @@
 \usage{
 regressoR.spline.smooth(metric, transformation.x = NULL,
   transformation.y = NULL, metric.transformed = NULL, forceEnd = TRUE,
-  forceStart = TRUE)
+  forceStart = TRUE, ...)
 }
 \arguments{
 \item{metric}{an instance of \code{RegressionQualityMetric}}

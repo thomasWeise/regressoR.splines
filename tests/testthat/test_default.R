@@ -11,7 +11,7 @@ context("default")
   for(s in sl) {
     sfr <- s(metric, NULL, NULL, NULL, 0);
     expect_is(sfr, "FittedSplineModel");
-    expect_lt(sfr@size, length(x));
+    expect_lte(sfr@size, length(x) + 3);
     expect_true(all(is.finite(sfr@f(x))));
     if(sfr@size > 15L) {
       expect_lt(metric@quality(sfr@f), 0.1);
@@ -24,7 +24,7 @@ context("default")
 
   for(s in sl) {
     sfr <- s(metric, NULL, NULL, NULL, 0);
-    expect_lt(sfr@size, length(x));
+    expect_lte(sfr@size, length(x)+3);
     expect_true(all(is.finite(sfr@f(x))));
     if(sfr@size > 4L) {
       expect_lt(metric@quality(sfr@f), 0.75);

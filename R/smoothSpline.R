@@ -1,7 +1,7 @@
 # The internal spline fitter function
 #' @importFrom stats smooth.spline predict
-.smooth.splineFitter <- function(xx, yy) {
-  result <- smooth.spline(x=xx, y=yy, keep.data=FALSE);
+.smooth.splineFitter <- function(xx, yy, ...) {
+  result <- smooth.spline(x=xx, y=yy, keep.data=FALSE, ...);
   result <- force(result);
   f <- function(x) predict(object=result, x=x)$y;
   f <- force(f);
@@ -29,8 +29,10 @@
 regressoR.spline.smooth <- function(metric,
                                     transformation.x=NULL, transformation.y=NULL,
                                     metric.transformed=NULL,
-                                    forceEnd=TRUE, forceStart=TRUE) {
+                                    forceEnd=TRUE, forceStart=TRUE,
+                                    ...) {
   .fitSpline(metric, .smooth.splineFitter, transformation.x,
              transformation.y, metric.transformed,
-             forceEnd=forceEnd, forceStart=forceStart);
+             forceEnd=forceEnd, forceStart=forceStart,
+             ...);
 }
