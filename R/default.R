@@ -1,33 +1,33 @@
 # make the default list
 #' @include smoothSpline.R
 #' @include linear.R
-.makeDefault <- function(forcer) {
-  forcer <- force(forcer);
+.makeDefault <- function(protected) {
+  protected <- force(protected);
   res <- unlist(c(
     # the original, raw smooth spline function
     function(metric, transformation.x, transformation.y, metric.transformed, q)
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer),
+                              protected=protected),
 
     # the smooth spline with weights
     function(metric, transformation.x, transformation.y, metric.transformed, q) {
       if(is.null(metric@weights)) { return(NULL); }
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               w=metric@weights)
     },
 
     # the smooth spline with using all points as knots
     function(metric, transformation.x, transformation.y, metric.transformed, q)
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=length(metric@x), all.knots=TRUE),
 
     # the smooth spline with using all points as knots and weights
     function(metric, transformation.x, transformation.y, metric.transformed, q) {
       if(is.null(metric@weights)) { return(NULL); }
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=length(metric@x), all.knots=TRUE,
                               w=metric@weights)
     },
@@ -35,14 +35,14 @@
     # the smooth spline not necessarily using all points as knots but many degrees of freedom
     function(metric, transformation.x, transformation.y, metric.transformed, q)
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=length(metric@x)),
 
     # the smooth spline not necessarily using all points as knots but many degrees of freedom and weights
     function(metric, transformation.x, transformation.y, metric.transformed, q) {
       if(is.null(metric@weights)) { return(NULL); }
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=length(metric@x),
                               w=metric@weights)
     },
@@ -50,14 +50,14 @@
     # the smooth spline with using half of the points as knots
     function(metric, transformation.x, transformation.y, metric.transformed, q)
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=round(0.5*length(metric@x)), all.knots=TRUE),
 
     # the smooth spline with using half of the points as knots and weights
     function(metric, transformation.x, transformation.y, metric.transformed, q) {
       if(is.null(metric@weights)) { return(NULL); }
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=round(0.5*length(metric@x)), all.knots=TRUE,
                               w=metric@weights)
     },
@@ -65,14 +65,14 @@
     # the smooth spline not necessarily using half of the points as knots but many degrees of freedom
     function(metric, transformation.x, transformation.y, metric.transformed, q)
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=round(0.5*length(metric@x))),
 
     # the smooth spline not necessarily using half of the points as knots but many degrees of freedom and weights
     function(metric, transformation.x, transformation.y, metric.transformed, q) {
       if(is.null(metric@weights)) { return(NULL); }
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=round(0.5*length(metric@x)),
                               w=metric@weights)
     },
@@ -80,14 +80,14 @@
     # the smooth spline with using 90% of the points as knots
     function(metric, transformation.x, transformation.y, metric.transformed, q)
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=round(0.9*length(metric@x)), all.knots=TRUE),
 
     # the smooth spline with using 90% of the points as knots and weights
     function(metric, transformation.x, transformation.y, metric.transformed, q) {
       if(is.null(metric@weights)) { return(NULL); }
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=round(0.9*length(metric@x)), all.knots=TRUE,
                               w=metric@weights)
     },
@@ -95,14 +95,14 @@
     # the smooth spline not necessarily using 90% of the points as knots but many degrees of freedom
     function(metric, transformation.x, transformation.y, metric.transformed, q)
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=round(0.9*length(metric@x))),
 
     # the smooth spline not necessarily using 90% of the points as knots but many degrees of freedom and weights
     function(metric, transformation.x, transformation.y, metric.transformed, q) {
       if(is.null(metric@weights)) { return(NULL); }
       regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                              forceStart = forcer, forceEnd = forcer,
+                              protected=protected,
                               df=round(0.9*length(metric@x)),
                               w=metric@weights)
     },
@@ -110,7 +110,7 @@
     # the linear trend or constant function
     function(metric, transformation.x, transformation.y, metric.transformed, q)
       regressoR.trend.linear(metric, transformation.x, transformation.y, metric.transformed,
-                             forceStart = forcer, forceEnd = forcer)
+                             protected=protected)
   ), recursive = TRUE);
 
   res <- force(res);

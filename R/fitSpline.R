@@ -19,7 +19,7 @@
                        splineFitter,
                        transformation.x=NULL, transformation.y=NULL,
                        metric.transformed=NULL,
-                       forceEnd=TRUE, forceStart=TRUE,
+                       protected=TRUE,
                        ...) {
 
   if(is.null(splineFitter) || (!(is.function(splineFitter)))) {
@@ -40,7 +40,7 @@
     f.y.i <- identical(f.y, identity);
   }
 
-  if(forceEnd || forceStart) {
+  if(protected) {
     # get the original data
     xx <- metric@x;
     yy <- metric@y;
@@ -68,7 +68,7 @@
       # or NULL and the transformed metric is NULL or identical to the actual
       # metric.
       # Then, we fit the spline directly on the original data and are good
-      if(!(forceEnd || forceStart)) {
+      if(!protected) {
         xx <- metric@x;
         yy <- metric@y;
         or <- order(xx);
@@ -138,57 +138,40 @@
   namePrefix <- "";
   limitAdd <- 0L;
 
-  if(forceEnd) {
+  if(protected) {
+    # hold both the end and the start
+
     namePrefix <- "protected ";
-    if(forceStart) {
-      # hold both the end and the start
-      limitAdd <- 2L;
-      f <- function(x) {
-        y <- vector(mode="double", length=length(x));
-        a <- x <= x.min;   # get positions of values which are too small
-        y[a] <- y.xmin;    # set these values
-        b <- x >= x.max;   # get positions of values too big
-        y[b] <- y.xmax;    # set these values
-        a <- !(a | b);     # get positions of remaining values
-        if(any(a)) {
-          y[a] <- f.n(x[a]); # compute these values
-        }
-        y                  # return result
-      }
+    limitAdd   <- 2L;
+
+    if(y.xmin < y.xmax) {
+      ymin <- y.xmin;
+      ymax <- y.xmax;
     } else {
-      # hold the end only
-      limitAdd <- 1L;
-      f <- function(x) {
-        y <- vector(mode="double", length=length(x));
-        b <- x >= x.max;   # get positions of values too big
-        y[b] <- y.xmax;    # set these values
-        a <- !(b);         # get positions of remaining values
-        if(any(a)) {
-          y[a] <- f.n(x[a]); # compute these values
-        }
-        y                  # return result
-      }
+      ymin <- y.xmax;
+      ymax <- y.xmin;
     }
+    ymin <- force(ymin);
+    ymax <- force(ymax);
+
+    f <- function(x) {
+      y <- vector(mode="double", length=length(x));
+      a <- x <= x.min;   # get positions of values which are too small
+      y[a] <- y.xmin;    # set these values
+      b <- x >= x.max;   # get positions of values too big
+      y[b] <- y.xmax;    # set these values
+      a <- !(a | b);     # get positions of remaining values
+      if(any(a)) {
+        y[a] <- f.n(x[a]); # compute these values
+      }
+      y[y > ymax] <- ymax; # fix maximum
+      y[y < ymin] <- ymin; # fix minimum
+      y                  # return result
+    }
+
   } else {
-    # not hold start
-    if(forceStart) {
-      # hold both only the start
-      limitAdd <- 1L;
-      namePrefix <- "protected ";
-      f <- function(x) {
-        y <- vector(mode="double", length=length(x));
-        a <- x <= x.min;   # get positions of values which are too small
-        y[a] <- y.xmin;    # set these values
-        a <- !(a);         # get positions of remaining values
-        if(any(a)) {
-          y[a] <- f.n(x[a]); # compute these values
-        }
-        y                  # return result
-      }
-    } else {
-      # don't need to hold any start or end values
-      f <- f.n;
-    }
+    # don't need to hold any start or end values
+    f <- f.n;
   }
 
   # compute the quality of the spline

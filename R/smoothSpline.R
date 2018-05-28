@@ -1,7 +1,19 @@
 # The internal spline fitter function
 #' @importFrom stats smooth.spline predict
+#' @importFrom utilizeR ignoreErrors
 .smooth.splineFitter <- function(xx, yy, ...) {
-  result <- smooth.spline(x=xx, y=yy, keep.data=FALSE, ...);
+  result <- NULL;
+
+  ignoreErrors(result <- smooth.spline(x=xx, y=yy, keep.data=FALSE, ...));
+  if(is.null(result)) {
+    for(spar in c(0.75, (1-((0:10)/10)))) {
+      ignoreErrors(result <- smooth.spline(x=xx, y=yy, keep.data=FALSE, spar=spar, ...));
+      if(!is.null(result)) {
+        break;
+      }
+    }
+  }
+
   result <- force(result);
   f <- function(x) predict(object=result, x=x)$y;
   f <- force(f);
