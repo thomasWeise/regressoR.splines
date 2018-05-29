@@ -4,6 +4,16 @@
 .smooth.splineFitter <- function(xx, yy, ...) {
   result <- NULL;
   ignoreErrors(result <- smooth.spline(x=xx, y=yy, keep.data=FALSE, ...));
+  if(is.null(result)) {
+    lst <- list(...);
+    if(isTRUE(lst$all.knots)) {
+      lst$all.knots <- FALSE;
+      lst$x <- xx;
+      lst$y <- yy;
+      lst$keep.data <- FALSE;
+      ignoreErrors(result <- do.call(smooth.spline, lst));
+    }
+  }
   result <- force(result);
   if(is.null(result)) { return(NULL); }
   f <- function(x) predict(object=result, x=x)$y;
