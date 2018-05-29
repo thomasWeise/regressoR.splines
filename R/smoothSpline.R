@@ -3,18 +3,9 @@
 #' @importFrom utilizeR ignoreErrors
 .smooth.splineFitter <- function(xx, yy, ...) {
   result <- NULL;
-
   ignoreErrors(result <- smooth.spline(x=xx, y=yy, keep.data=FALSE, ...));
-  if(is.null(result)) {
-    for(spar in c(0.75, (1-((0:10)/10)))) {
-      ignoreErrors(result <- smooth.spline(x=xx, y=yy, keep.data=FALSE, spar=spar, ...));
-      if(!is.null(result)) {
-        break;
-      }
-    }
-  }
-
   result <- force(result);
+  if(is.null(result)) { return(NULL); }
   f <- function(x) predict(object=result, x=x)$y;
   f <- force(f);
   return(list(f=f, size=as.integer(ceiling(result$df)), name="smooth.spline"));

@@ -40,12 +40,12 @@
     f.y.i <- identical(f.y, identity);
   }
 
-  if(protected) {
-    # get the original data
-    xx <- metric@x;
-    yy <- metric@y;
-    or <- order(xx);
+  # get the original data
+  xx <- metric@x;
+  yy <- metric@y;
+  or <- order(xx);
 
+  if(protected) {
     # setup boundary values
     i <- or[1L];
     x.min  <- xx[i]; x.min  <- force(x.min);
@@ -53,6 +53,18 @@
     i <- or[length(xx)];
     x.max  <- xx[i]; x.max  <- force(x.max);
     y.xmax <- yy[i]; y.xmax <- force(y.xmax);
+
+    r <- range(yy);
+    ymin <- r[1L];
+    ymax <- r[2L];
+    ymin <- force(ymin);
+    ymax <- force(ymax);
+  } else {
+    # dummy values that will cause errors later on
+    x.max <- NaN;
+    y.xmax <- NaN;
+    x.min <- NaN;
+    y.xmin <- NaN;
   }
 
   # initialize result
@@ -68,12 +80,7 @@
       # or NULL and the transformed metric is NULL or identical to the actual
       # metric.
       # Then, we fit the spline directly on the original data and are good
-      if(!protected) {
-        xx <- metric@x;
-        yy <- metric@y;
-        or <- order(xx);
-      }
-      ignoreErrors(result <- (splineFitter(x=xx[or], y=yy[or], ...)));
+      ignoreErrors(result <- splineFitter(x=xx[or], y=yy[or], ...));
       if(is.null(result)) {
         return(NULL);
       }
@@ -95,7 +102,7 @@
     or <- order(xx);
 
     # The first fitting step takes place on the transformed data.
-    ignoreErrors(result <- (splineFitter(x=xx[or], y=yy[or], ...)));
+    ignoreErrors(result <- splineFitter(x=xx[or], y=yy[or], ...));
     if(is.null(result)) {
       return(NULL);
     }
@@ -104,17 +111,17 @@
   }
 
   # take the function
-  f <- result$f;
+  f1 <- result$f;
   nameAdd <- "";
 
   # get function for raw data
   if(f.x.i) {
     if(f.y.i) {
       # no transformation
-      f.n <- f;
+      f2 <- f1;
     } else {
       # x is identity, y is not
-      f.n <- function(x) f.y(f(x));
+      f2 <- function(x) f.y(f1(x));
       trafo.complex <- transformation.y@complexity;
       nameAdd <- " with transformed y";
     }
@@ -122,12 +129,12 @@
     # x is not identity
     if(f.y.i) {
       # y is identity, x not
-      f.n <- function(x) f(f.x(x));
+      f2 <- function(x) f1(f.x(x));
       trafo.complex <- transformation.x@complexity;
       nameAdd <- " with transformed x";
     } else {
       # neither is
-      f.n <- function(x) f.y(f(f.x(x)));
+      f2 <- function(x) f.y(f1(f.x(x)));
       trafo.complex <- transformation.x@complexity +
                        transformation.y@complexity;
       nameAdd <- " with transformed xy";
@@ -144,17 +151,7 @@
     namePrefix <- "protected ";
     limitAdd   <- 2L;
 
-    if(y.xmin < y.xmax) {
-      ymin <- y.xmin;
-      ymax <- y.xmax;
-    } else {
-      ymin <- y.xmax;
-      ymax <- y.xmin;
-    }
-    ymin <- force(ymin);
-    ymax <- force(ymax);
-
-    f <- function(x) {
+    f3 <- function(x) {
       y <- vector(mode="double", length=length(x));
       a <- x <= x.min;   # get positions of values which are too small
       y[a] <- y.xmin;    # set these values
@@ -162,22 +159,21 @@
       y[b] <- y.xmax;    # set these values
       a <- !(a | b);     # get positions of remaining values
       if(any(a)) {
-        y[a] <- f.n(x[a]); # compute these values
+        y[a] <- f2(x[a]); # compute these values
       }
       y[y > ymax] <- ymax; # fix maximum
       y[y < ymin] <- ymin; # fix minimum
       y                  # return result
     }
-
   } else {
     # don't need to hold any start or end values
-    f <- f.n;
+    f3 <- f2;
   }
 
   # compute the quality of the spline
-  quality <- metric@quality(f);
+  quality <- metric@quality(f3);
   if(learning.checkQuality(quality)) {
-    return(FittedSplineModel.new(f, quality,
+    return(FittedSplineModel.new(f3, quality,
          # size is spline size, plus 2 for the limit points, plus the
          # transformation
            result$size + limitAdd + trafo.complex,

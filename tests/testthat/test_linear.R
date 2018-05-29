@@ -10,24 +10,14 @@ test_that("Test linear noiseless", {
 
   metric <- regressoR.quality::RegressionQualityMetric.default(x, y);
 
-  sfr <- regressoR.trend.linear(metric, forceStart = TRUE, forceEnd=TRUE);
+  sfr <- regressoR.trend.linear(metric, protected=TRUE);
   expect_is(sfr, "FittedSplineModel");
   expect_identical(sfr@size, 4L);
   expect_true(all(is.finite((sfr@f(x)))));
 
-  sfr <- regressoR.trend.linear(metric, forceStart = TRUE, forceEnd=FALSE);
-  expect_is(sfr, "FittedSplineModel");
-  expect_identical(sfr@size, 3L);
-  expect_true(all(is.finite((sfr@f(x)))));
-
-  sfr <- regressoR.trend.linear(metric, forceStart = FALSE, forceEnd=FALSE);
+  sfr <- regressoR.trend.linear(metric, protected=FALSE);
   expect_is(sfr, "FittedSplineModel");
   expect_identical(sfr@size, 2L);
-  expect_true(all(is.finite((sfr@f(x)))));
-
-  sfr <- regressoR.trend.linear(metric, forceStart = FALSE, forceEnd=TRUE);
-  expect_is(sfr, "FittedSplineModel");
-  expect_identical(sfr@size, 3L);
   expect_true(all(is.finite((sfr@f(x)))));
 })
 
@@ -39,23 +29,13 @@ test_that("Test linear noisy", {
 
   metric <- regressoR.quality::RegressionQualityMetric.default(x, y);
 
-  sfr <- regressoR.trend.linear(metric, forceStart = TRUE, forceEnd=TRUE);
+  sfr <- regressoR.trend.linear(metric, protected=TRUE);
   expect_is(sfr, "FittedSplineModel");
   expect_identical(sfr@size, 4L);
   expect_true(all(is.finite((sfr@f(x)))));
 
-  sfr <- regressoR.trend.linear(metric, forceStart = TRUE, forceEnd=FALSE);
-  expect_is(sfr, "FittedSplineModel");
-  expect_identical(sfr@size, 3L);
-  expect_true(all(is.finite((sfr@f(x)))));
-
-  sfr <- regressoR.trend.linear(metric, forceStart = FALSE, forceEnd=FALSE);
+  sfr <- regressoR.trend.linear(metric, protected=FALSE);
   expect_is(sfr, "FittedSplineModel");
   expect_identical(sfr@size, 2L);
-  expect_true(all(is.finite((sfr@f(x)))));
-
-  sfr <- regressoR.trend.linear(metric, forceStart = FALSE, forceEnd=TRUE);
-  expect_is(sfr, "FittedSplineModel");
-  expect_identical(sfr@size, 3L);
   expect_true(all(is.finite((sfr@f(x)))));
 })

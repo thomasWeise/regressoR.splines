@@ -1,7 +1,7 @@
 # The internal linear trend fitter function
 #' @importFrom stats lm
-.linear.fitter <- function(xx, yy) {
-  res <- lm(yy ~ xx, model=FALSE, x=FALSE, y=FALSE);
+.linear.fitter <- function(xx, yy, ...) {
+  res <- lm(yy ~ xx, model=FALSE, x=FALSE, y=FALSE, ...);
 
   if(is.null(res)) { return(NULL); }
   if(is.null(res$coefficients) ||
@@ -35,6 +35,7 @@
 #' @param metric.transformed the transformed metric for the first fitting step
 #' @param protected should the function be limited to the range of values
 #'   actually ocurring in the data?
+#' @param ... parameters to be passed to \code{\link[stats]{lm}} directly
 #' @return On success, an instance of \code{\link{FittedSplineModel}},
 #'   \code{NULL} on failure.
 #' @export regressoR.trend.linear
@@ -42,7 +43,8 @@
 regressoR.trend.linear <- function(metric,
                                    transformation.x=NULL, transformation.y=NULL,
                                    metric.transformed=NULL,
-                                   protected=TRUE) {
+                                   protected=TRUE,
+                                   ...) {
   .fitSpline(metric, .linear.fitter, transformation.x,
              transformation.y, metric.transformed,
              protected=protected);

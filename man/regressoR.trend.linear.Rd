@@ -5,7 +5,8 @@
 \title{Fit a Linear Trend to a given Dataset}
 \usage{
 regressoR.trend.linear(metric, transformation.x = NULL,
-  transformation.y = NULL, metric.transformed = NULL, protected = TRUE)
+  transformation.y = NULL, metric.transformed = NULL, protected = TRUE,
+  ...)
 }
 \arguments{
 \item{metric}{an instance of \code{RegressionQualityMetric}}
@@ -20,6 +21,8 @@ regressoR.trend.linear(metric, transformation.x = NULL,
 
 \item{protected}{should the function be limited to the range of values
 actually ocurring in the data?}
+
+\item{...}{parameters to be passed to \code{\link[stats]{lm}} directly}
 }
 \value{
 On success, an instance of \code{\link{FittedSplineModel}},
