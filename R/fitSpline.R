@@ -41,20 +41,22 @@
   }
 
   # get the original data
-  xx <- metric@x;
-  yy <- metric@y;
-  or <- order(xx);
+  x.sorted <- metric@x;
+  y.sorted <- metric@y;
+  or <- order(x.sorted);
+  x.sorted <- x.sorted[or];
+  y.sorted <- y.sorted[or];
+  or       <- NULL;
 
   if(protected) {
     # setup boundary values
-    i <- or[1L];
-    x.min  <- xx[i]; x.min  <- force(x.min);
-    y.xmin <- yy[i]; y.xmin <- force(y.xmin);
-    i <- or[length(xx)];
-    x.max  <- xx[i]; x.max  <- force(x.max);
-    y.xmax <- yy[i]; y.xmax <- force(y.xmax);
+    x.min  <- x.sorted[1]; x.min  <- force(x.min);
+    y.xmin <- y.sorted[1]; y.xmin <- force(y.xmin);
+    i <- length(x.sorted);
+    x.max  <- x.sorted[i]; x.max  <- force(x.max);
+    y.xmax <- y.sorted[i]; y.xmax <- force(y.xmax);
 
-    r <- range(yy);
+    r <- range(y.sorted);
     ymin <- r[1L];
     ymax <- r[2L];
     ymin <- force(ymin);
@@ -80,7 +82,7 @@
       # or NULL and the transformed metric is NULL or identical to the actual
       # metric.
       # Then, we fit the spline directly on the original data and are good
-      ignoreErrors(result <- splineFitter(x=xx[or], y=yy[or], ...));
+      ignoreErrors(result <- splineFitter(x=x.sorted, y=y.sorted, ...));
       if(is.null(result)) {
         return(NULL);
       }
@@ -92,7 +94,6 @@
       stop("Transformed metric canot be NULL if at least one transformation is not NULL or identity.");
     }
   }
-  xx <- NULL; yy <- NULL; or <- NULL;
 
   if(is.null(result)) {
     # OK, we need to deal with the transformed data
@@ -161,9 +162,17 @@
       if(any(a)) {
         y[a] <- f2(x[a]); # compute these values
       }
+
+      # enforce monotonicity
+      indexes <- findInterval(x, x.sorted); # find indexes
+      sel     <- (indexes > 0L);
+      y[sel]  <- pmin(y[sel], y.sorted[indexes[sel]]);
+      sel     <- (indexes < length(y.sorted));
+      y[sel]  <- pmax(y[sel], y.sorted[indexes[sel] + 1L]);
+
       y[y > ymax] <- ymax; # fix maximum
       y[y < ymin] <- ymin; # fix minimum
-      y                  # return result
+      y                    # return result
     }
   } else {
     # don't need to hold any start or end values

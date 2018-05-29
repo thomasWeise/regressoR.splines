@@ -2,7 +2,7 @@ library("regressoR.splines")
 context("loess")
 
 test_that("Test loess noiseless", {
-  f <- function(x) 3 - 2*x + 0.3*x*x + 2*sin(7*x)
+  f <- function(x) 3 - 2*x + 0.3*x*x
 
   x <- runif(1000, min=0, max=6);
   #y <- rnorm(n=length(x), mean=f(x), s=0.3);
@@ -22,7 +22,7 @@ test_that("Test loess noiseless", {
 })
 
 test_that("Test loess noisy", {
-  f <- function(x) 3 - 2*x + 0.3*x*x + 2*sin(7*x)
+  f <- function(x) 3 - 2*x + 0.3*x*x
 
   x <- runif(1000, min=0, max=6);
   y <- rnorm(n=length(x), mean=f(x), s=0.3);

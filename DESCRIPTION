@@ -1,7 +1,7 @@
 Package: regressoR.splines
 Type: Package
 Title: An R Package for two-dimensional Regression using Splines
-Version: 0.8.4
+Version: 0.8.5
 Author: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Maintainer: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Description: This package provides methods for fitting spline-based models
