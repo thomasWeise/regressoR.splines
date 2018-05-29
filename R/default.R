@@ -9,7 +9,7 @@
            function(metric, transformation.x, transformation.y, metric.transformed, q)
              regressoR.trend.linear(metric, transformation.x, transformation.y, metric.transformed,
                                     protected=protected),
-           # the eighted linear trend or constant function
+           # the weighted linear trend or constant function
            function(metric, transformation.x, transformation.y, metric.transformed, q) {
              if(is.null(metric@weights)) { return(NULL); }
              regressoR.trend.linear(metric, transformation.x, transformation.y, metric.transformed,
@@ -66,34 +66,12 @@
            function(metric, transformation.x, transformation.y, metric.transformed, q)
              regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
                                      protected=protected,
-                                     all.knots=FALSE, df=max(1L, round(0.75*length(metric@x)))),
-           # spline
-           function(metric, transformation.x, transformation.y, metric.transformed, q)
-             regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                                     protected=protected,
-                                     all.knots=TRUE, df=max(1L, round(0.75*length(metric@x)))),
-
-           # spline
-           function(metric, transformation.x, transformation.y, metric.transformed, q)
-             regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                                     protected=protected,
                                      all.knots=FALSE, spar=1),
            # spline
            function(metric, transformation.x, transformation.y, metric.transformed, q)
              regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
                                      protected=protected,
                                      all.knots=TRUE, spar=1),
-
-           # spline
-           function(metric, transformation.x, transformation.y, metric.transformed, q)
-             regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                                     protected=protected,
-                                     all.knots=FALSE, spar=0.75),
-           # spline
-           function(metric, transformation.x, transformation.y, metric.transformed, q)
-             regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                                     protected=protected,
-                                     all.knots=TRUE, spar=0.75),
 
            # spline
            function(metric, transformation.x, transformation.y, metric.transformed, q)
@@ -184,21 +162,6 @@
              if(is.null(metric@weights)) { return(NULL); }
              regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
                                      protected=protected, w=metric@weights,
-                                     all.knots=FALSE, df=max(1L, round(0.75*length(metric@x))))
-           },
-           # weighted spline
-           function(metric, transformation.x, transformation.y, metric.transformed, q) {
-             if(is.null(metric@weights)) { return(NULL); }
-             regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                                     protected=protected, w=metric@weights,
-                                     all.knots=TRUE, df=max(1L, round(0.75*length(metric@x))))
-           },
-
-           # weighted spline
-           function(metric, transformation.x, transformation.y, metric.transformed, q) {
-             if(is.null(metric@weights)) { return(NULL); }
-             regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                                     protected=protected, w=metric@weights,
                                      all.knots=FALSE, spar=1)
            },
            # weighted spline
@@ -207,21 +170,6 @@
              regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
                                      protected=protected, w=metric@weights,
                                      all.knots=TRUE, spar=1)
-           },
-
-           # weighted spline
-           function(metric, transformation.x, transformation.y, metric.transformed, q) {
-             if(is.null(metric@weights)) { return(NULL); }
-             regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                                     protected=protected, w=metric@weights,
-                                     all.knots=FALSE, spar=0.75)
-           },
-           # weighted spline
-           function(metric, transformation.x, transformation.y, metric.transformed, q) {
-             if(is.null(metric@weights)) { return(NULL); }
-             regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
-                                     protected=protected, w=metric@weights,
-                                     all.knots=TRUE, spar=0.75)
            },
 
            # weighted spline
@@ -252,10 +200,7 @@
              regressoR.spline.smooth(metric, transformation.x, transformation.y, metric.transformed,
                                      protected=protected, w=metric@weights,
                                      all.knots=TRUE, spar=0.5)
-           }
-
-
-           );
+           });
 
 
   res <- force(res);
