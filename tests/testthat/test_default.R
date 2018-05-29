@@ -21,8 +21,8 @@ context("default")
       expect_lte(sfr@size, length(x) + 3);
       expect_true(all(is.finite(sfr@f(x))));
       if(sfr@size > 15L) {
-        expect_lt(metric@quality(sfr@f), 1.8);
-        expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 1.8)
+        expect_lt(metric@quality(sfr@f), 4);
+        expect_lt(sum(abs(sfr@f(x) - y)) / length(x), 4)
       }
     }
   }

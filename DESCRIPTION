@@ -28,6 +28,7 @@ RoxygenNote: 6.0.1.9000
 Collate: 
     'FittedSplineModel.R'
     'fitSpline.R'
+    'loess.R'
     'linear.R'
     'smoothSpline.R'
     'default.R'

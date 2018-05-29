@@ -153,9 +153,9 @@
 
     f3 <- function(x) {
       y <- vector(mode="double", length=length(x));
-      a <- x <= x.min;   # get positions of values which are too small
+      a <- (x <= x.min); # get positions of values which are too small
       y[a] <- y.xmin;    # set these values
-      b <- x >= x.max;   # get positions of values too big
+      b <- (x >= x.max); # get positions of values too big
       y[b] <- y.xmax;    # set these values
       a <- !(a | b);     # get positions of remaining values
       if(any(a)) {
