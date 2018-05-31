@@ -49,7 +49,6 @@ FittedSplineModel.new <- function(f, quality, size, name) {
 #' @description well, convert a \code{FittedSplineModel} to a String
 #' @param x the \code{FittedSplineModel}
 #' @return the string
-#' @importFrom utilizeR functionToString
 #' @export FittedSplineModel.as.character
 FittedSplineModel.as.character <- function(x) x@name
 

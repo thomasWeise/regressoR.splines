@@ -1,7 +1,7 @@
 Package: regressoR.splines
 Type: Package
 Title: An R Package for two-dimensional Regression using Splines
-Version: 0.8.5
+Version: 0.8.6
 Author: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Maintainer: Dr. Thomas Weise <tweise@hfuu.edu.cn>
 Description: This package provides methods for fitting spline-based models
@@ -11,12 +11,12 @@ Encoding: UTF-8
 LazyData: true
 URL: http://www.github.com/thomasWeise/regressoR.splines
 BugReports: http://www.github.com/thomasWeise/regressoR.splines/issues
-Imports: learnerSelectoR (>= 0.8.6),
+Imports: learnerSelectoR (>= 0.8.7),
          methods (>= 3.3.2),
-         regressoR.base (>= 0.8.4),
-         regressoR.quality (>= 0.8.4),
+         regressoR.base (>= 0.8.5),
+         regressoR.quality (>= 0.8.5),
          stats (>= 3.3.2),
-         utilizeR (>= 0.8.3)
+         utilizeR (>= 0.8.4)
 Suggests: testthat (>= 2.0.0),
           roxygen2 (>= 6.0.1)
 Depends: R (>= 3.3.0)
