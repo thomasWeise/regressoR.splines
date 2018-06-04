@@ -3,7 +3,6 @@
 # @param metric an instance of \code{RegressionQualityMetric}
 # @param splineFitter a function \code{f(x, y)} returning a list \code(list(f=splineFunc,
 #   size=numberOfPoints, name=name))
-# @param par the initial starting point
 # @param transformation.x the transformation along the \code{x}-axis, or
 #   \code{NULL} if none was applied to the data
 # @param transformation.y the transformation along the \code{y}-axis, or

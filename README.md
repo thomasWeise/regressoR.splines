@@ -6,7 +6,7 @@
 This package provides methods for fitting spline-based models to two-dimensional data.
     
 ## Installation
-You can install the package directl from GitHub by using the package
+You can install the package directly from GitHub by using the package
 [`devtools`](http://cran.r-project.org/web/packages/devtools/index.html) as
 follows:
 
