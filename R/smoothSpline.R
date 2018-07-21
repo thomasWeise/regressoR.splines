@@ -1,10 +1,20 @@
+.check.spline <- function(result) {
+  if(is.null(result) ||
+     (!(is.list(result)) ||
+      (class(result) != "smooth.spline"))) {
+    return(FALSE);
+  }
+  return(TRUE);
+}
+
 # The internal spline fitter function
 #' @importFrom stats smooth.spline predict
 #' @importFrom utilizeR ignoreErrors
 .smooth.splineFitter <- function(xx, yy, ...) {
+  if(length(xx) < 4) { return(NULL); }
   result <- NULL;
   ignoreErrors(result <- smooth.spline(x=xx, y=yy, keep.data=FALSE, ...));
-  if(is.null(result)) {
+  if(!.check.spline(result)) {
     lst <- list(...);
     if(isTRUE(lst$all.knots)) {
       lst$all.knots <- FALSE;
@@ -15,7 +25,7 @@
     }
   }
   result <- force(result);
-  if(is.null(result)) { return(NULL); }
+  if(!.check.spline(result)) { return(NULL); }
   f <- function(x) predict(object=result, x=x)$y;
   f <- force(f);
   return(list(f=f, size=as.integer(ceiling(result$df)), name="smooth.spline"));
