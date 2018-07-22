@@ -110,84 +110,86 @@
     xx <- NULL; yy <- NULL; or <- NULL;
   }
 
-  # take the function
-  f1 <- result$f;
-  nameAdd <- "";
+  ignoreErrors({
+    # take the function
+    f1 <- result$f;
+    nameAdd <- "";
 
-  # get function for raw data
-  if(f.x.i) {
-    if(f.y.i) {
-      # no transformation
-      f2 <- f1;
-    } else {
-      # x is identity, y is not
-      f2 <- function(x) f.y(f1(x));
-      trafo.complex <- transformation.y@complexity;
-      nameAdd <- " with transformed y";
-    }
-  } else {
-    # x is not identity
-    if(f.y.i) {
-      # y is identity, x not
-      f2 <- function(x) f1(f.x(x));
-      trafo.complex <- transformation.x@complexity;
-      nameAdd <- " with transformed x";
-    } else {
-      # neither is
-      f2 <- function(x) f.y(f1(f.x(x)));
-      trafo.complex <- transformation.x@complexity +
-                       transformation.y@complexity;
-      nameAdd <- " with transformed xy";
-    }
-  }
-
-  # build the resulting spline function
-  namePrefix <- "";
-  limitAdd <- 0L;
-
-  if(protected) {
-    # hold both the end and the start
-
-    namePrefix <- "protected ";
-    limitAdd   <- 2L;
-
-    f3 <- function(x) {
-      y <- vector(mode="double", length=length(x));
-      a <- (x <= x.min); # get positions of values which are too small
-      y[a] <- y.xmin;    # set these values
-      b <- (x >= x.max); # get positions of values too big
-      y[b] <- y.xmax;    # set these values
-      a <- !(a | b);     # get positions of remaining values
-      if(any(a)) {
-        y[a] <- f2(x[a]); # compute these values
+    # get function for raw data
+    if(f.x.i) {
+      if(f.y.i) {
+        # no transformation
+        f2 <- f1;
+      } else {
+        # x is identity, y is not
+        f2 <- function(x) f.y(f1(x));
+        trafo.complex <- transformation.y@complexity;
+        nameAdd <- " with transformed y";
       }
-
-      # enforce monotonicity
-      indexes <- findInterval(x, x.sorted); # find indexes
-      sel     <- (indexes > 0L);
-      y[sel]  <- pmin(y[sel], y.sorted[indexes[sel]]);
-      sel     <- (indexes < length(y.sorted));
-      y[sel]  <- pmax(y[sel], y.sorted[indexes[sel] + 1L]);
-
-      y[y > ymax] <- ymax; # fix maximum
-      y[y < ymin] <- ymin; # fix minimum
-      y                    # return result
+    } else {
+      # x is not identity
+      if(f.y.i) {
+        # y is identity, x not
+        f2 <- function(x) f1(f.x(x));
+        trafo.complex <- transformation.x@complexity;
+        nameAdd <- " with transformed x";
+      } else {
+        # neither is
+        f2 <- function(x) f.y(f1(f.x(x)));
+        trafo.complex <- transformation.x@complexity +
+                         transformation.y@complexity;
+        nameAdd <- " with transformed xy";
+      }
     }
-  } else {
-    # don't need to hold any start or end values
-    f3 <- f2;
-  }
 
-  # compute the quality of the spline
-  quality <- metric@quality(f3);
-  if(learning.checkQuality(quality)) {
-    return(FittedSplineModel.new(f3, quality,
-         # size is spline size, plus 2 for the limit points, plus the
-         # transformation
-           result$size + limitAdd + trafo.complex,
-           paste(namePrefix, result$name, nameAdd,
-                 sep="", collapse="")));
-  }
+    # build the resulting spline function
+    namePrefix <- "";
+    limitAdd <- 0L;
+
+    if(protected) {
+      # hold both the end and the start
+
+      namePrefix <- "protected ";
+      limitAdd   <- 2L;
+
+      f3 <- function(x) {
+        y <- vector(mode="double", length=length(x));
+        a <- (x <= x.min); # get positions of values which are too small
+        y[a] <- y.xmin;    # set these values
+        b <- (x >= x.max); # get positions of values too big
+        y[b] <- y.xmax;    # set these values
+        a <- !(a | b);     # get positions of remaining values
+        if(any(a)) {
+          y[a] <- f2(x[a]); # compute these values
+        }
+
+        # enforce monotonicity
+        indexes <- findInterval(x, x.sorted); # find indexes
+        sel     <- (indexes > 0L);
+        y[sel]  <- pmin(y[sel], y.sorted[indexes[sel]]);
+        sel     <- (indexes < length(y.sorted));
+        y[sel]  <- pmax(y[sel], y.sorted[indexes[sel] + 1L]);
+
+        y[y > ymax] <- ymax; # fix maximum
+        y[y < ymin] <- ymin; # fix minimum
+        y                    # return result
+      }
+    } else {
+      # don't need to hold any start or end values
+      f3 <- f2;
+    }
+
+    # compute the quality of the spline
+    quality <- metric@quality(f3);
+    if(learning.checkQuality(quality)) {
+      return(FittedSplineModel.new(f3, quality,
+           # size is spline size, plus 2 for the limit points, plus the
+           # transformation
+             result$size + limitAdd + trafo.complex,
+             paste(namePrefix, result$name, nameAdd,
+                   sep="", collapse="")));
+    }
+  });
 
   # ok, the spline is somehow invalid
   return(NULL);
